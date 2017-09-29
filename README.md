@@ -24,6 +24,12 @@ var external = require('@yelo/rollup-node-external');
 module.exports = {
     ...
     external: external(), // in order to ignore all modules in node_modules folder
+    plugins: [
+        ...
+        // import node-resolve plugin
+        require('rollup-plugin-node-resovle')(),
+        ...
+    ],
     ...
 };
 ```
@@ -55,10 +61,15 @@ var external = require('@yelo/rollup-node-external');
 ...
 module.exports = {
     ...
-    externals: external({
+    external: external({
         // this WILL include `jquery` and `rollup/hot/dev-server` in the bundle, as well as `lodash/*`
         whitelist: ['jquery', 'rollup/hot/dev-server', /^lodash/]
     }),
+    plugins: [
+        ...
+        require('rollup-plugin-node-resovle')(),
+        ...
+    ],
     ...
 };
 ```
