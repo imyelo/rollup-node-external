@@ -1,19 +1,18 @@
 {
-  "name": "webpack-node-externals",
+  "name": "@yelo/rollup-node-external",
   "version": "1.6.0",
-  "description": "Easily exclude node_modules in Webpack bundle",
+  "description": "Easily exclude node_modules in Rollup bundle, forked from webpack-node-externals",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/liady/webpack-node-externals.git"
+    "url": "https://github.com/imyelo/rollup-node-external.git"
   },
   "dependencies": {},
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "mock-fs-require-fix": "^1.0.1",
-    "ncp": "^2.0.0",
-    "webpack": "^1.13.1"
+    "ncp": "^2.0.0"
   },
   "scripts": {
     "unit": "mocha --colors ./test/*.spec.js",
@@ -21,24 +20,27 @@
     "test": "npm run unit-watch"
   },
   "keywords": [
-    "webpack",
+    "rollup",
     "node_modules",
     "node",
     "bundle",
-    "externals"
+    "external"
   ],
   "author": {
     "name": "Liad Yosef",
     "url": "https://github.com/liady"
   },
+  "contributors": [
+    "yelo <zhihuzeye@gmail.com> (https://github.com/imyelo)"
+  ],
   "files": [
     "LICENSE",
     "README.md",
     "index.js"
   ],
   "bugs": {
-    "url": "https://github.com/liady/webpack-node-externals/issues"
+    "url": "https://github.com/imyelo/rollup-node-external/issues"
   },
-  "homepage": "https://github.com/liady/webpack-node-externals",
+  "homepage": "https://github.com/imyelo/rollup-node-external",
   "license": "MIT"
 }
