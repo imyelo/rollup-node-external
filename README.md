@@ -62,8 +62,8 @@ var external = require('@yelo/rollup-node-external');
 module.exports = {
     ...
     external: external({
-        // this WILL include `jquery` and `rollup/hot/dev-server` in the bundle, as well as `lodash/*`
-        whitelist: ['jquery', 'rollup/hot/dev-server', /^lodash/]
+        // this WILL include `jquery` in the bundle, as well as `lodash/*`
+        whitelist: ['jquery', /^lodash/]
     }),
     plugins: [
         ...
