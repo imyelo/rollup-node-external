@@ -95,13 +95,8 @@ module.exports = function nodeExternals(options) {
     var nodeModules = modulesFromFile ? readFromPackageJson() : readDir(modulesDir).filter(isNotBinary);
 
     // return an externals function
-    return function(context, request, callback){
+    return function(request){
         var moduleName = getModuleName(request, includeAbsolutePaths);
-        if (contains(nodeModules, moduleName) && !containsPattern(whitelist, request)) {
-            // mark this module as external
-            // https://webpack.github.io/docs/configuration.html#externals
-            return callback(null, importType + " " + request);
-        };
-        callback();
+        return contains(nodeModules, moduleName) && !containsPattern(whitelist, request);
     }
 }
