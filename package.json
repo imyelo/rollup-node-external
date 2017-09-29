@@ -1,6 +1,6 @@
 {
   "name": "@yelo/rollup-node-external",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easily exclude node_modules in Rollup bundle, forked from webpack-node-externals",
   "main": "index.js",
   "repository": {
