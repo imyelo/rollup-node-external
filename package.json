@@ -12,7 +12,10 @@
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "mock-fs-require-fix": "^1.0.1",
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "rollup": "^0.50.0",
+    "rollup-plugin-commonjs": "^8.2.1",
+    "rollup-plugin-node-resolve": "^3.0.0"
   },
   "scripts": {
     "unit": "mocha --colors ./test/*.spec.js",

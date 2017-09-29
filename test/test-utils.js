@@ -1,6 +1,8 @@
 var mockDir = require('mock-fs-require-fix');
 var nodeExternals = require('../index.js');
-var webpack = require('webpack');
+var rollup = require('rollup').rollup;
+var nodeResolve = require('rollup-plugin-node-resolve')
+var commonjs = require('rollup-plugin-commonjs')
 var fs = require('fs');
 var ncp = require('ncp').ncp;
 var path = require('path');
@@ -16,11 +18,8 @@ var expect = chai.expect;
  * @return {function}                the assertion function
  */
 exports.buildAssertion = function buildAssertion(context, moduleName, expectedResult){
-    return function(done) {
-        context.instance(relative(), moduleName, function(noarg, externalModule) {
-            expect(externalModule).to.be.equal(expectedResult);
-            done();
-        })
+    return function() {
+        expect(context.instance(moduleName), expectedResult)
     };
 }
 
@@ -75,7 +74,7 @@ exports.restoreMock = function restoreMock(){
 
 exports.copyModules = function(moduleNames) {
     return Promise.all(moduleNames.map(function(moduleName) {
-        return copyDir(relative('test-webpack', 'modules', moduleName), relative('../node_modules', moduleName));
+        return copyDir(relative('test-rollup', 'modules', moduleName), relative('../node_modules', moduleName));
     }));
 }
 
@@ -92,46 +91,37 @@ exports.removeModules = function(moduleNames) {
  * @param {object} nonExternals expected non externals
  * @return {function} the assertion function
  */
-exports.webpackAssertion = function webpackAssertion(nodeExternalsConfig, externals, nonExternals){
+exports.rollupAssertion = function rollupAssertion(nodeExternalsConfig, externals, nonExternals){
     return function() {
-        return generateWithWebpack(nodeExternalsConfig).then(function(result) {
+        return generateWithRollup(nodeExternalsConfig).then(function(result) {
             assertExternals(result, externals, nonExternals);
-        });
+        }, function (err) { console.log(err) });
     };
 }
 
 /**
- * Generates the result file with Webpack, using our nodeExternals
+ * Generates the result file with rollup, using our nodeExternals
  * @param  {object} context             The context object to hang the result on
  * @param  {object} nodeExternalsConfig The node externals configuration
  * @return {Promise}
  */
-function generateWithWebpack(nodeExternalsConfig) {
-    var testDir = relative('test-webpack');
+function generateWithRollup(nodeExternalsConfig) {
+    var testDir = relative('test-rollup');
     var outputFileName = 'bundle.js';
     var outputFile = path.join(testDir, outputFileName);
-    return new Promise(function(resolve, reject) {
-        webpack({
-            entry: path.join(testDir, 'index.js'),
-            output: {
-                filename: outputFileName,
-                path: testDir
-            },
-            externals: [nodeExternals(nodeExternalsConfig)],
-            resolve: {
-                alias: {
-                    'module-c' : path.join(testDir, './modules/module-c')
-                }
-            }
-        }, function(err, stats){
-            if(err) {
-                reject(err);
-            } else {
-                var contents = fs.readFileSync(outputFile, 'utf-8');
-                fs.unlinkSync(outputFile);
-                resolve(contents);
-            }
+    return rollup({
+        input: path.join(testDir, 'index.js'),
+        external: nodeExternals(nodeExternalsConfig),
+        plugins: [
+            nodeResolve(),
+            commonjs()
+        ]
+    }).then(function (bundle) {
+        return bundle.generate({
+            format: 'cjs'
         });
+    }).then(function (output) {
+        return output.code;
     });
 }
 
@@ -151,7 +141,7 @@ function bundled(moduleName) {
 }
 
 function external(moduleName) {
-    return 'require("'+ moduleName +'")';
+    return 'require(\''+ moduleName +'\')';
 }
 
 function removeDir(dirName) {
