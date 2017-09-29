@@ -1,14 +1,14 @@
-rollup node modules externals
+rollup node modules external
 ==============================
 > Easily exclude node modules in rollup, forked from webpack-node-externals
 
-[![Version](https://img.shields.io/npm/v/@yelo/rollup-node-externals.svg)](https://www.npmjs.org/package/@yelo/rollup-node-externals)
-[![Downloads](https://img.shields.io/npm/dm/@yelo/rollup-node-externals.svg)](https://www.npmjs.org/package/@yelo/rollup-node-externals)
+[![Version](https://img.shields.io/npm/v/@yelo/rollup-node-external.svg)](https://www.npmjs.org/package/@yelo/rollup-node-external)
+[![Downloads](https://img.shields.io/npm/dm/@yelo/rollup-node-external.svg)](https://www.npmjs.org/package/@yelo/rollup-node-external)
 
-rollup allows you to define [*externals*](https://rollupjs.org/#peer-dependencies) - modules that should not be bundled.
+rollup allows you to define [*external*](https://rollupjs.org/#peer-dependencies) - modules that should not be bundled.
 
 When bundling with rollup for the backend - you usually don't want to bundle its `node_modules` dependencies.
-This library creates an *externals* function that ignores `node_modules` when bundling in rollup.
+This library creates an *external* function that ignores `node_modules` when bundling in rollup.
 
 **Forked from [liady/webpack-node-externals](https://github.com/liady/webpack-node-externals)**
 
@@ -37,13 +37,13 @@ And that's it. All node modules will no longer be bundled but will be left as `r
 
 ## Detailed overview
 ### Description
-This library scans the `node_modules` folder for all node_modules names, and builds an *externals* function that tells rollup not to bundle those modules, or any sub-modules of theirs.
+This library scans the `node_modules` folder for all node_modules names, and builds an *external* function that tells rollup not to bundle those modules, or any sub-modules of theirs.
 
 ### Configuration
 This library accepts an `options` object.
 
 #### `options.whitelist (=[])`
-An array for the `externals` to whitelist, so they **will** be included in the bundle. Can accept exact strings (`'module_name'`), regex patterns (`/^module_name/`), or a function that accepts the module name and returns whether it should be included.
+An array for the `external` to whitelist, so they **will** be included in the bundle. Can accept exact strings (`'module_name'`), regex patterns (`/^module_name/`), or a function that accepts the module name and returns whether it should be included.
 <br/>**Important** - if you have set aliases in your rollup config with the exact same names as modules in *node_modules*, you need to whitelist them so rollup will know they should be bundled.
 
 #### `options.importType (='commonjs')`
